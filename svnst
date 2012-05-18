@@ -1,0 +1,26 @@
+#!/usr/bin/php
+
+<?php
+
+define(RED_COLOR, chr(27) . '[1;31m');
+define(GREEN_COLOR, chr(27) . '[1;32m');
+define(RESET_COLOR, chr(27) . '[0m');
+
+exec('cd ' . getcwd());
+$argv[0] = '';
+
+$result = array();
+exec('svn st ' . implode(' ', $argv), $result);
+
+foreach ($result as $line) {
+	$status = substr($line, 0, 1);
+	if ($status == 'C') {
+		echo RED_COLOR;
+	} else if ($status != '?') {
+		echo GREEN_COLOR;
+	} else {
+		echo RESET_COLOR;
+	}
+	echo $line . "\n" . RESET_COLOR;
+}
+
